@@ -46,7 +46,7 @@ import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 
 ///////////////////DSADSADAS
-
+/////////////////////@@@@@@@@@@@@@@@@@@@@@@@@
 
 /**
  * a class that implements the interface Model and fulfills those functions 
