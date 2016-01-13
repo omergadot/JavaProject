@@ -454,7 +454,7 @@ public class MazeWindow extends BasicWindow{
 		});	
 		
 		////////////////////////////////////////////////////////////////////////////////////////
-		this.mazeD=new Maze2D(shell, SWT.BORDER|SWT.FILL);
+		this.mazeD=new Maze2D(shell, SWT.BORDER|SWT.FILL|SWT.DOUBLE_BUFFERED);
 		this.mazeD.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,5));
 		///////////////////////////////////////////////////////////////////////////////////////
 		
@@ -767,7 +767,7 @@ public class MazeWindow extends BasicWindow{
 					
 				}
 				
-				if(arg0.keyCode == SWT.PAGE_DOWN)
+				if(arg0.keyCode == SWT.PAGE_DOWN || mazeD.mazeData[mazeD.characterY][mazeD.characterX] == 1)
 				{
 					try{
 						setChanged();
@@ -904,11 +904,14 @@ public class MazeWindow extends BasicWindow{
 			@Override
 			public void run() {
 				
+				mazeD.victory = false; //a new maze has been generated/loaded, therefore the victory is false
+										//the user did'nt win yet.
 				mazeD.crossBy = "4 ";
 				mazeD.mazeData = maze.getCrossSectionByY(maze.getStartPos().getY_pos());
 				
 				mazeD.setStartPos(maze.getStartPos());
 				mazeD.setGoalPos(maze.getGoalPos());
+				currentFloor.setText("floor : "+mazeD.characterY);
 				mazeD.redraw();
 				
 				/*mazeD.setMazeData(maze.getCrossSectionByY(maze.getStartPos().getY_pos()));

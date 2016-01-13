@@ -53,6 +53,7 @@ public abstract class MazeDisplayer extends Canvas{
 	 int flourExit;
 	 
 	 boolean hintFlag;
+	 boolean victory = false;
 	
 	public MazeDisplayer(Composite parent, int style) {
 		super(parent, style);
