@@ -1,5 +1,8 @@
 package view;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -30,22 +33,33 @@ import algorithms.search.State;
  */
 public class Maze2D extends MazeDisplayer{
 
+	Image startImg;
+	Image goalImg;
+	Image youWon;
+	Image wall;
+	Image solutionImg;
+  
 	
-	Image startImg = new Image(getDisplay(), "C:\\Users\\Omer\\Desktop\\JumpingRabbit.JPG");
-	Image goalImg = new Image(getDisplay(), "C:\\Users\\Omer\\Desktop\\carrots.png");
-	Image youWon = new Image(getDisplay(), "C:\\Users\\Omer\\Desktop\\backflip-layout.jpg");
-	boolean victory = true;
 	
-	
-
 	 public Maze2D(Composite parent,int style){
 	        super(parent, style);
 	    	// set a white background   (red, green, blue)
-	    	setBackground(new Color(null, 255, 255, 255));
+	    	 try {
+				startImg = new Image(getDisplay(),new FileInputStream("resources/new.jpg"));
+				 goalImg = new Image(getDisplay(), new FileInputStream("resources/pluto.jpg"));
+				 youWon = new Image(getDisplay(),new FileInputStream("resources/won.jpg"));
+				 wall = new Image(getDisplay(), new FileInputStream("resources/stars.jpg"));
+				 solutionImg = new Image(getDisplay(), new FileInputStream("resources/asteroid.jpg"));
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	    	setBackground(new Color(null, 0, 0, 0));
 	    	addPaintListener(new PaintListener() {
 				
 				@Override
 				public void paintControl(PaintEvent e) {
+					if(!victory){
 					   e.gc.setForeground(new Color(null,0,0,0));
 					   e.gc.setBackground(new Color(null,0,0,0));
 					   
@@ -89,13 +103,12 @@ public class Maze2D extends MazeDisplayer{
 					   for(int i=0;i<mazeData.length;i++)
 					      for(int j=0;j<mazeData[i].length;j++){
 					    	  
-					    	  
-					    	  
 					          int x=j*w;
 					          int y=i*h;
-					          if(mazeData[i][j]==1)
-					              e.gc.fillRectangle(x,y,w,h);
-					          
+					          if(mazeData[i][j]==1){
+					             // e.gc.fillRectangle(x,y,w,h);
+					        	  g.drawImage(wall, 0, 0, 236, 213, x, y, w, h);
+					          }
 					          if(solution != null)
 					          {     
 					        	State current = new State<Position>(new Position(flourCharacter, i, j));
@@ -105,13 +118,13 @@ public class Maze2D extends MazeDisplayer{
 					        	{
 					        		solution.getSolution().remove(current);
 					        	}
-					        	
+					        	//print solution
 					        	if(solution.getSolution().contains(current))
 					        	{
-					        		  e.gc.setBackground(new Color(null,255,0,0));
-						        	  e.gc.fillRectangle(x, y, w, h);
-						        	  e.gc.setBackground(new Color(null,0,0,0));
-						        	
+					        		 // e.gc.setBackground(new Color(null,255,0,0));
+						        	 // e.gc.fillRectangle(x, y, w, h);
+						        	 // e.gc.setBackground(new Color(null,0,0,0));
+					        		 g.drawImage(solutionImg, 0, 0, 270, 187, x, y, w, h);
 					        	}
 					        	
 					        	/*int end_of_loop=0;
@@ -164,37 +177,38 @@ public class Maze2D extends MazeDisplayer{
 							        	  e.gc.fillRectangle(x, y, w, h);
 							        	  e.gc.setBackground(new Color(null,0,0,0));
 					          }*/
-					          
+					          //character
 					          if(i==characterY && j == characterX)
 					          {
-					        	  e.gc.setBackground(new Color(null,0,0,255));
-					        	  e.gc.fillRectangle(x, y, w, h);
-					        	  e.gc.setBackground(new Color(null,0,0,0));
-					        	  //g.drawImage(startImg, 0, 0, 200, 200, x, y, w, h);
+					        	 // e.gc.setBackground(new Color(null,0,0,255));
+					        	 // e.gc.fillRectangle(x, y, w, h);
+					        	 // e.gc.setBackground(new Color(null,0,0,0));
+					        	  g.drawImage(startImg, 0, 0, 246, 205, x, y, w, h);
 					     
 					        	  //g.dispose();
 					        	//  startImg.dispose();
 					          }
 					          if(i==exitY && j==exitX && flourCharacter == flourExit)
 					          {
-					        	  e.gc.setBackground(new Color(null,0,255,0));
-					        	  e.gc.fillRectangle(x, y, w, h);
-					        	  e.gc.setBackground(new Color(null,0,0,0));  
-					            //g.drawImage(goalImg, 0, 0, 362, 255, x, y, w, h);
+					        	 // e.gc.setBackground(new Color(null,0,255,0));
+					        	 // e.gc.fillRectangle(x, y, w, h);
+					        	 // e.gc.setBackground(new Color(null,0,0,0));  
+					              g.drawImage(goalImg, 0, 0, 208, 208, x, y, w, h);
 					          }
 	
 							  if(characterX == exitX && characterY == exitY && flourCharacter == flourExit)
 							  {
-								g.drawImage(youWon,w,h);
-								victory = false;
+								g.drawImage(youWon, 0, 0, 670, 440, 0, 0, width, height);
+								victory = true;
 								return;
 							  }
 					      }
 					}
-				    
+			    	else{
+			    		return;
+			    	}
+				}  
 			});
-	    	if(!victory)
-	    		parent.dispose();
 	 }
 
 
