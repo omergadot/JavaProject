@@ -80,7 +80,7 @@ public class Run {
 		
 		MyModel m = null;
 		try {
-			m = new MyModel(properties.getThreadsRunning());
+			m = new MyModel();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

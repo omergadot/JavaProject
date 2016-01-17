@@ -3,6 +3,7 @@ package view;
 import algorithms.maseGenerators.Maze3d;
 import algorithms.maseGenerators.Position;
 import algorithms.search.Solution;
+import presenter.Properties;
 
 /**
  * this class is actually fulfills all of our methods from the 
@@ -64,6 +65,11 @@ public class MyView  implements View
 	}
 	@Override
 	public void displaymessage(int[][] crossSection) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void displaymessage(Properties p) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}

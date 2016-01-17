@@ -38,6 +38,10 @@ public class Maze2D extends MazeDisplayer{
 	Image youWon;
 	Image wall;
 	Image solutionImg;
+	//Image FloorUpImg;
+	//Image FloordownImg;
+	//Image FloorUpNdownImg;
+	
   
 	
 	
@@ -50,6 +54,9 @@ public class Maze2D extends MazeDisplayer{
 				 youWon = new Image(getDisplay(),new FileInputStream("resources/won.jpg"));
 				 wall = new Image(getDisplay(), new FileInputStream("resources/stars.jpg"));
 				 solutionImg = new Image(getDisplay(), new FileInputStream("resources/asteroid.jpg"));
+				 //FloorUpImg = new Image(getDisplay(), new FileInputStream("resources/up.gif"));
+				// FloordownImg = new Image(getDisplay(), new FileInputStream("resources/down.jpg"));
+				// FloorUpNdownImg = new Image(getDisplay(), new FileInputStream("resources/both.jpg"));
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -166,7 +173,36 @@ public class Maze2D extends MazeDisplayer{
 						  			
 						         
 					        	  
-					        	 
+					         //if you can go up and down
+					         if(((flourCharacter < maze.getA()-1) && (maze.getCrossSectionByY(flourCharacter+1)[i][j] == 0)) && ((flourCharacter > 0) && (maze.getCrossSectionByY(flourCharacter-1)[i][j] == 0))) //mark as green if you can go up
+					         {
+					            /*e.gc.setBackground(new Color(null,0,255,0));
+					            e.gc.fillRectangle(x, y, w, h);
+					           	e.gc.setBackground(new Color(null,0,0,0));*/
+					        	// g.drawImage(FloorUpNdownImg, 0, 0, 2000, 1500, x, y, w, h);	        	  
+					         //////////////////// print the pictuer that you can go up and down
+					          }
+					          					          
+					          					          
+					          else
+					          {		
+					            //if you can go up
+					            if((flourCharacter < maze.getA()-1) && (maze.getCrossSectionByY(flourCharacter+1)[i][j] == 0))
+					          	 {
+					            	//g.drawImage(FloorUpImg, 0, 0, 540, 540, x, y, w, h);
+					                  ////////////////////////you can go up
+					          	 }
+					          					        	  
+					          	  //if you can go down
+					          	 if((flourCharacter > 0) && (maze.getCrossSectionByY(flourCharacter-1)[i][j] == 0)) 
+					             {
+					         	  /*e.gc.setBackground(new Color(null,255,0,0));
+					          	    e.gc.fillRectangle(x, y, w, h);
+					          	    e.gc.setBackground(new Color(null,0,0,0));  */
+					          		//g.drawImage(FloordownImg, 0, 0, 600, 375, x, y, w, h);				        	  
+					          		 ////////////////////// print the pic that you can go down
+					          	  }
+					           } 
 				
 					          
 					          

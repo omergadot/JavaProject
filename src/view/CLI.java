@@ -12,6 +12,7 @@ import algorithms.maseGenerators.Maze3d;
 import algorithms.maseGenerators.Position;
 import algorithms.search.Solution;
 import presenter.Command;
+import presenter.Properties;
 
 
 /**
@@ -131,6 +132,12 @@ public class CLI extends Observable implements View
 
 	@Override
 	public void displaymessage(int[][] crossSection) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void displaymessage(Properties p) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}

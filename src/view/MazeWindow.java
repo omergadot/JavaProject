@@ -23,6 +23,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
@@ -62,7 +63,7 @@ public class MazeWindow extends BasicWindow{
 		//menu
 		//////////////////////////////////////////////default setting
 		setting = new Properties();
-		setting.setGenerateAlgorithm("Simple");
+		setting.setGenerateAlgorithm("Prim");
 		setting.setSolveAlgorithm("bfs");
 		setting.setThreadsRunning(5);
 		///////////////////////////////////////////////
@@ -163,6 +164,43 @@ public class MazeWindow extends BasicWindow{
 			}
 		});
 		
+		MenuItem ShowProperties = new MenuItem(file, SWT.PUSH);
+		ShowProperties.setText("Show Properties");
+		ShowProperties.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				Shell sh = new Shell(display);
+				sh.setLayout(new GridLayout(2, false));
+				sh.setSize(300, 200);
+				Label createAlgorithmLabel = new Label(sh, SWT.COLOR_BLUE);
+				createAlgorithmLabel.setText("create Algorithm");
+				Text createAlgorithmText = new Text(sh, SWT.BORDER|SWT.READ_ONLY);
+				createAlgorithmText.setEnabled(false);
+				createAlgorithmText.setText(setting.getGenerateAlgorithm());
+				    
+			    Label solveAlgorithmLabel = new Label(sh, SWT.COLOR_BLUE);
+				solveAlgorithmLabel.setText("Solve Algorithm");
+			    Text solveAlgorithmText = new Text(sh, SWT.BORDER|SWT.READ_ONLY);
+			    solveAlgorithmText.setEnabled(false);
+				solveAlgorithmText.setText(setting.getSolveAlgorithm());
+				    
+		        Label numOfThreadsRunningLabel = new Label(sh, SWT.COLOR_BLUE);
+			    numOfThreadsRunningLabel.setText("Threads Running");
+				Text numOfThreadsRunningText = new Text(sh, SWT.BORDER|SWT.READ_ONLY);
+			    numOfThreadsRunningText.setEnabled(false);
+				numOfThreadsRunningText.setText(setting.getThreadsRunning()+"");
+				sh.open();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		
 		MenuItem loadXMLFile = new MenuItem(file, SWT.PUSH);
 		loadXMLFile.setText("open properties file");
 		loadXMLFile.addSelectionListener(new SelectionListener() {
@@ -170,7 +208,15 @@ public class MazeWindow extends BasicWindow{
 			@Override
 			public void widgetSelected(SelectionEvent arg0)
 			{	
-				Shell sh = new Shell(display);
+				FileDialog fd=new FileDialog(shell,SWT.OPEN);
+				fd.setText("open");
+				fd.setFilterPath("");
+				String[] filterExt = { "*.xml"};
+				fd.setFilterExtensions(filterExt);
+				String filename = fd.open();
+				setChanged();
+				notifyObservers("xml "+filename);
+				/*Shell sh = new Shell(display);
 				sh.setLayout(new GridLayout(1, false));
 				sh.setText("setting");
 				sh.setSize(200, 300);
@@ -252,6 +298,7 @@ public class MazeWindow extends BasicWindow{
 				}
 				
 			     sh.open();
+			     */
 			}
 			
 			@Override
@@ -526,11 +573,26 @@ public class MazeWindow extends BasicWindow{
 			
 			@Override
 			public void handleEvent(Event arg0) {
-				var = "Exit";
-				setChanged();
-				notifyObservers(var);
-						
-				shell.dispose();
+				MessageBox mb = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+				mb.setMessage("Do you really want to exit? :( ");
+				
+				if(mb.open() == SWT.YES)
+				{
+					
+					var = "Exit";
+					setChanged();
+					notifyObservers(var);
+							
+					shell.dispose();
+				}
+				
+				else
+				{
+					System.out.println("DSDAD");
+					shell.open();
+				}
+				
+				
 				
 			}
 		});
@@ -767,12 +829,12 @@ public class MazeWindow extends BasicWindow{
 					
 				}
 				
-				if(arg0.keyCode == SWT.PAGE_DOWN || mazeD.mazeData[mazeD.characterY][mazeD.characterX] == 1)
+				if(arg0.keyCode == SWT.PAGE_DOWN )
 				{
 					try{
 						setChanged();
 						notifyObservers(mazeD.crossBy + (mazeD.flourCharacter-1) + "," +mazeD.name);
-						if(mazeD.mazeData == null)
+						if(mazeD.mazeData == null  || mazeD.mazeData[mazeD.characterY][mazeD.characterX] == 1)
 						{
 							setChanged();
 							notifyObservers(mazeD.crossBy+ (mazeD.flourCharacter) + "," +mazeD.name);
@@ -908,10 +970,10 @@ public class MazeWindow extends BasicWindow{
 										//the user did'nt win yet.
 				mazeD.crossBy = "4 ";
 				mazeD.mazeData = maze.getCrossSectionByY(maze.getStartPos().getY_pos());
-				
+				mazeD.maze = maze;
 				mazeD.setStartPos(maze.getStartPos());
 				mazeD.setGoalPos(maze.getGoalPos());
-				currentFloor.setText("floor : "+mazeD.characterY);
+				currentFloor.setText("floor : "+mazeD.flourCharacter);
 				mazeD.redraw();
 				
 				/*mazeD.setMazeData(maze.getCrossSectionByY(maze.getStartPos().getY_pos()));
@@ -967,6 +1029,12 @@ public class MazeWindow extends BasicWindow{
 		});
 		
 		
+	}
+
+
+	@Override
+	public void displaymessage(Properties p) throws Exception {
+		setting = p;
 	}
 
 

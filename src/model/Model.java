@@ -165,6 +165,11 @@ public interface Model
 	public int getGoalIndexY(String name);
 	public int getStartIndexY(String name);
 	
+	/**
+	 * this function gets a file name of an existing properties file 
+	 * @param filename of an existing xml file
+	 */
+	public void setGametProperties(String filename);
 	
 	/**
 	 * Exit from the Game, makes an order exit, 

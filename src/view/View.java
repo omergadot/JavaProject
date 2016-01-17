@@ -5,6 +5,7 @@ import java.util.Observable;
 import algorithms.maseGenerators.Maze3d;
 import algorithms.maseGenerators.Position;
 import algorithms.search.Solution;
+import presenter.Properties;
 
 public interface View 
 {
@@ -22,6 +23,9 @@ public interface View
 	public void displaymessage(Solution<Position> sol) throws Exception ;
 	
 	public void displaymessage(int [][] crossSection) throws Exception;
+
+
+	public void displaymessage(Properties p) throws Exception;
 
 	
 }

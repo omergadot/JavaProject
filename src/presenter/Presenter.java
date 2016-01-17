@@ -134,13 +134,22 @@ public class Presenter implements Observer
 			}
 			
 			
-			else if(!(arg instanceof Solution<?>) && !(arg instanceof Maze3d))
+		    if(!(arg instanceof Solution<?>) && !(arg instanceof Maze3d))
 				try {
 					v.displaymessage(arg.toString());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}	
+				}
+		    
+		    if(arg instanceof Properties)
+				try {
+					v.displaymessage((Properties)arg);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
 		}
 			
 		 if(o instanceof View)
@@ -155,33 +164,38 @@ public class Presenter implements Observer
 						e2.printStackTrace();
 					}
 				}
-				
+			 
+			 
+			
 				else
 				{
-					String temp = (String)arg;
+					String temp = (String)arg;	
 				    String[] temp1 = temp.split(" ");
-					String choise = temp1[0];
-					int choiseInt = Integer.parseInt(choise);
+				    if(temp1[0].equals("xml"))
+				    	m.setGametProperties(temp1[1]);
+				    else{
+					 String choise = temp1[0];
+					 int choiseInt = Integer.parseInt(choise);
 					
-					/*if(choiseInt < 1 || choiseInt > 12)
-						try {
-							throw new Exception("inavlid number type");
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					*/
-					String var = temp1[1];
+					 /*if(choiseInt < 1 || choiseInt > 12)
+						 try {
+							 throw new Exception("inavlid number type");
+						 } catch (Exception e1) {
+							 // TODO Auto-generated catch block
+							 e1.printStackTrace();
+						 }
+					 */
+					 String var = temp1[1];
 					
-					try 
-					{
-						hashMap.get(choise).doCommand(var);
+					 try 
+					 {
+						 hashMap.get(choise).doCommand(var);
 						
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
+					 } catch (Exception e) {
+						 // TODO Auto-generated catch block
+					 	 e.printStackTrace();
+					 }
+				   }
 				}
 		 }
 	}

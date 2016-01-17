@@ -1,5 +1,6 @@
 package model;
 
+import java.beans.XMLDecoder;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -44,6 +45,7 @@ import algorithms.search.State;
 import algorithms.search.StateCostComperator;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
+import presenter.Properties;
 
 /**
  * a class that implements the interface Model and fulfills those functions 
@@ -62,6 +64,7 @@ public class MyModel extends Observable implements Model {
 	HashMap<String, Maze3d> hm;
 	
 	int size;
+	Properties p;
 	
 	/**
 	 * HashMap between the name of the maze (String)
@@ -114,14 +117,16 @@ public class MyModel extends Observable implements Model {
 		return hm.get(name).getStartPos().getY_pos();
 	}
 	
-	public MyModel(int numOfTreads) throws FileNotFoundException, ClassNotFoundException, IOException
+	public MyModel(/*int numOfTreads*/) throws FileNotFoundException, ClassNotFoundException, IOException
 	{
 		super();
 		hm = new HashMap<String,Maze3d>();//initialize the hash map
 		algohashmap = new HashMap<String,Solution<Position>>();
 		mazeSolution = new HashMap<Maze3d,Solution<Position>>();
-		exe  = Executors.newFixedThreadPool(numOfTreads);
-		
+        XMLDecoder xml = new XMLDecoder(new FileInputStream("properties.xml"));//default properties file
+        p = new Properties();
+        p = (Properties)xml.readObject();
+        exe  = Executors.newFixedThreadPool(p.getThreadsRunning());
 		//this.readFromZipFile("omerzipfile.zip"); /////////////////////////////////////////////////////////////
 		
 	}
@@ -129,6 +134,7 @@ public class MyModel extends Observable implements Model {
 	@Override
 	public Maze3d generate3dmaze(String name, int y, int z, int x,String algoname) throws Exception
 	{ 
+		p.setGenerateAlgorithm(algoname);
 		Callable<Maze3d> a = new Callable<Maze3d>() {
 
 			@Override
@@ -138,11 +144,11 @@ public class MyModel extends Observable implements Model {
 				Maze3d maze = null;
 								
 				try {//set the algorithm
-					if(algoname.equals("DFS"))
+					if(p.getGenerateAlgorithm().equals("DFS"))
 						mg = new DFSMazeGanarator();
-					if(algoname.equals("Prim")) 
+					if(p.getGenerateAlgorithm().equals("Prim")) 
 						mg = new PrimMazeGenerator();
-					if(algoname.equals("Simple"))
+					if(p.getGenerateAlgorithm().equals("Simple"))
 						mg = new SimpleMaze3dGenerator();
 					maze = mg.generate(y, z, x);
 				} catch (NullPointerException e) {
@@ -195,6 +201,8 @@ public class MyModel extends Observable implements Model {
 	@Override
 	public Solution<Position> solve(String name, String algorithm)  throws Exception{
 		
+		p.setSolveAlgorithm(algorithm);
+		
 		if(algohashmap.containsKey(name))///////////////////////
 		{
 			setChanged();
@@ -216,7 +224,7 @@ public class MyModel extends Observable implements Model {
 				State<Position> goal_state = new State<Position>(hm.get(name).getGoalPos());
 				Comparator<State<Position>> comparator = new StateCostComperator<Position>();
 				Searcher<Position> a = null;
-				switch(algorithm){//set the algorithm
+				switch(p.getSolveAlgorithm()){//set the algorithm
 				case "bfs"://set the algorithm to bfs
 				    a = new BFS<Position>(comparator);
 					break;
@@ -504,6 +512,20 @@ public class MyModel extends Observable implements Model {
 		
 		return;
 		
+	}
+
+	@Override
+	public void setGametProperties(String filename) {
+        XMLDecoder xml = null;
+		try {
+			xml = new XMLDecoder(new FileInputStream(filename));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        p = (Properties)xml.readObject();
+        setChanged();
+        notifyObservers(p);
 	}
 
 	
