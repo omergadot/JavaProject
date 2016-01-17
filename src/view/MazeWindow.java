@@ -526,11 +526,26 @@ public class MazeWindow extends BasicWindow{
 			
 			@Override
 			public void handleEvent(Event arg0) {
-				var = "Exit";
-				setChanged();
-				notifyObservers(var);
-						
-				shell.dispose();
+				MessageBox mb = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+				mb.setMessage("Do you really want to exit? :( ");
+				
+				if(mb.open() == SWT.YES)
+				{
+					
+					var = "Exit";
+					setChanged();
+					notifyObservers(var);
+							
+					shell.dispose();
+				}
+				
+				else
+				{
+					System.out.println("DSDAD");
+					shell.open();
+				}
+				
+				
 				
 			}
 		});
@@ -767,12 +782,12 @@ public class MazeWindow extends BasicWindow{
 					
 				}
 				
-				if(arg0.keyCode == SWT.PAGE_DOWN || mazeD.mazeData[mazeD.characterY][mazeD.characterX] == 1)
+				if(arg0.keyCode == SWT.PAGE_DOWN )
 				{
 					try{
 						setChanged();
 						notifyObservers(mazeD.crossBy + (mazeD.flourCharacter-1) + "," +mazeD.name);
-						if(mazeD.mazeData == null)
+						if(mazeD.mazeData == null  || mazeD.mazeData[mazeD.characterY][mazeD.characterX] == 1)
 						{
 							setChanged();
 							notifyObservers(mazeD.crossBy+ (mazeD.flourCharacter) + "," +mazeD.name);
@@ -908,10 +923,10 @@ public class MazeWindow extends BasicWindow{
 										//the user did'nt win yet.
 				mazeD.crossBy = "4 ";
 				mazeD.mazeData = maze.getCrossSectionByY(maze.getStartPos().getY_pos());
-				
+				mazeD.maze = maze;
 				mazeD.setStartPos(maze.getStartPos());
 				mazeD.setGoalPos(maze.getGoalPos());
-				currentFloor.setText("floor : "+mazeD.characterY);
+				currentFloor.setText("floor : "+mazeD.flourCharacter);
 				mazeD.redraw();
 				
 				/*mazeD.setMazeData(maze.getCrossSectionByY(maze.getStartPos().getY_pos()));

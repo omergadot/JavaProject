@@ -178,6 +178,43 @@ public class Maze2D extends MazeDisplayer{
 							        	  e.gc.setBackground(new Color(null,0,0,0));
 					          }*/
 					          //character
+					          
+
+					          
+					         
+					          
+					        //if you can go up and down
+					          if(((flourCharacter < maze.getA()-1) && (maze.getCrossSectionByY(flourCharacter+1)[i][j] == 0)) && ((flourCharacter > 0) && (maze.getCrossSectionByY(flourCharacter-1)[i][j] == 0))) //mark as green if you can go up
+					          {
+					        	  /*e.gc.setBackground(new Color(null,0,255,0));
+					        	  e.gc.fillRectangle(x, y, w, h);
+					        	  e.gc.setBackground(new Color(null,0,0,0));*/
+					        	  
+					        	  //////////////////// print the pictuer that you can go up and down
+					          }
+					          
+					          
+					          else
+					          {		
+					        	  //if you can go up
+					        	  if((flourCharacter < maze.getA()-1) && (maze.getCrossSectionByY(flourCharacter+1)[i][j] == 0))
+						          {
+						        	  ////////////////////////you can go up
+						          }
+					        	  
+					        	  //if you can go down
+					        	  if((flourCharacter > 0) && (maze.getCrossSectionByY(flourCharacter-1)[i][j] == 0)) 
+						          {
+						        	  /*e.gc.setBackground(new Color(null,255,0,0));
+						        	  e.gc.fillRectangle(x, y, w, h);
+						        	  e.gc.setBackground(new Color(null,0,0,0));  */
+						        	  
+						        	  ////////////////////// print the pic that you can go down
+						          }
+					          }
+					          
+					          
+					          
 					          if(i==characterY && j == characterX)
 					          {
 					        	 // e.gc.setBackground(new Color(null,0,0,255));
